@@ -1,11 +1,13 @@
 #include<iostream>
 #include<adder.h>
 #include<GLFW/glfw3.h>
+#include<SPOONConfig.h>
 
-
-int main(){
+int main(int argc, char* argv[]){
     std::cout << "Hey, Yinjia!" << std::endl;
-    std::cout << adder(12.0f, 13.0f) << std::endl;
+    std::cout << adder(13.0f, 13.0f) << std::endl;
+    std::cout << argv[0] << " Version "<< SPOON_VERSION_MAJOR 
+              << "." << SPOON_VERSION_MINOR << '\n';
 
     GLFWwindow* window;
     int width, height;

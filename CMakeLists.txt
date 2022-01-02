@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.16.3)
 
-project(SPOON)
+project(SPOON VERSION 0.1)
+
+configure_file(SPOONConfig.h.in SPOONConfig.h)
 
 add_executable(${PROJECT_NAME} main.cpp)
 
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR})
 
 # https://cmake.org/cmake/help/latest/command/add_subdirectory.html
 
