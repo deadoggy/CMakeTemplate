@@ -1,22 +1,9 @@
 cmake_minimum_required(VERSION 3.16.3)
 
 project(SPOON VERSION 0.1)
-
 configure_file(SPOONConfig.h.in SPOONConfig.h)
 
-add_executable(${PROJECT_NAME} main.cpp)
-
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR})
-
-# https://cmake.org/cmake/help/latest/command/add_subdirectory.html
-
-# Individual library 
-
-add_subdirectory(Adder)
-
-
-# Git submodule library
-
+# Check Submodules
 #           DOWNLOAD ALL THE SUBMODULES
 find_package(Git QUIET)
 if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
@@ -33,13 +20,23 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
     endif()
 endif()
 
-#           CHECK ALL THE SUBMODULES
+
+
+# Add Subdirectories
+# https://cmake.org/cmake/help/latest/command/add_subdirectory.html
+
+# --Libraries 
+add_subdirectory(lib/adder)
+
+# --External
+# ----CHECK ALL THE SUBMODULES
 if(NOT EXISTS "${PROJECT_SOURCE_DIR}/external/glfw/CMakeLists.txt")
     message(FATAL_ERROR "The glfw submodules was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif()
 add_subdirectory(external/glfw)
 
-
+# Executable 
+add_executable(${PROJECT_NAME} main.cpp)
 
 # https://cmake.org/cmake/help/v3.0/command/target_link_libraries.html
 # The name of GLFW library is glfw although the file name is libglfw3.a. It is specified in external/glfw/src/CMakeLists.txt
@@ -51,13 +48,14 @@ target_link_libraries(${PROJECT_NAME}
 # https://cmake.org/cmake/help/latest/command/target_link_directories.html
 # The relative path is to the target, which is out/build/SPOON in this project
 target_link_directories(${PROJECT_NAME}
-        PRIVATE Adder
+        PRIVATE lib/adder
         PRIVATE external/glfw/src
 )
 
 # https://cmake.org/cmake/help/latest/command/target_include_directories.html
 target_include_directories(${PROJECT_NAME} 
-        PUBLIC Adder 
+        PUBLIC lib/adder 
         PUBLIC external/glfw/include
+        PUBLIC ${PROJECT_BINARY_DIR}
 )
 

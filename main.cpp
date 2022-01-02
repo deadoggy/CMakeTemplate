@@ -10,7 +10,6 @@ int main(int argc, char* argv[]){
               << "." << SPOON_VERSION_MINOR << '\n';
 
     GLFWwindow* window;
-    int width, height;
 
     if( !glfwInit() )
     {
